@@ -8,20 +8,39 @@ import './index.css'
 import App from './App.jsx'
 import * as ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import MainLayout from './Layout/MainLayout.jsx';
+import HomePage from './Layout/HomePage.jsx';
+import ThemeProvider from './Provider/ThemeProvider.jsx';
+import Login from './Page/Login.jsx';
+import AuthProvider from './Provider/AuthProvider.jsx';
 
 const queryClient = new QueryClient()
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world!</div>,
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/',
+        element: <HomePage />
+      },
+      {
+        path: '/login',
+        element: <Login />
+      },
+    ]
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </AuthProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
