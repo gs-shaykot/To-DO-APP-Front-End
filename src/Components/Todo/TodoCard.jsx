@@ -22,7 +22,7 @@ const TodoCard = ({ Alldata, handleEditClick, handleDelete }) => {
             {...attributes}
             {...listeners}
             className={`${theme === 'light' ? 'border-[#31353c] bg-[#1f2937] text-white' : 'border-[#374151] bg-base-100 text-black'} 
-                        w-full border shadow-md box-border p-4 rounded-md mb-3`}
+                        w-full border shadow-md box-border p-4 rounded-md mb-3 touch-none`}
         >
             {/* Header with Title and Actions */}
             <div className='flex justify-between items-center mb-2'>

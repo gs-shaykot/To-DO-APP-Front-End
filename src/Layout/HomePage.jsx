@@ -1,3 +1,4 @@
+// there is a problem. if i remove useSensor(PointerSensor) the drag & Drop feature works in mobile device, but drag & drop feature stop working in large device.
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../Provider/ThemeProvider';
 import Todo from '../Components/Todo/Todo';
@@ -6,12 +7,13 @@ import InProgress from './../Components/InProgress/InProgress';
 import Done from './../Components/Done/Done';
 import useTodo from './../Hooks/useTodo';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import useAxiosPublic from '../Hooks/useAxiosPublic';
 
 const HomePage = () => {
     const { theme } = useContext(ThemeContext);
     const [AllTasks, isPending, refetch] = useTodo();
     const [tasks, setTasks] = useState(AllTasks || []);
-
+    const axiosPub = useAxiosPublic()
     useEffect(() => {
         setTasks(AllTasks);
     }, [AllTasks]);
@@ -45,7 +47,7 @@ const HomePage = () => {
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
         })
-    )
+    );
 
     return (
         <div className={`${theme === 'light' ? 'bg-[#111827] text-white' : 'bg-[#f0f0f0] text-black'} h-auto pt-24 pb-10 overflow-hidden`}>
