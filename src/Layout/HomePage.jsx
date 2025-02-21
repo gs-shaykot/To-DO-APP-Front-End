@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../Provider/ThemeProvider';
 import Todo from '../Components/Todo/Todo';
-import { closestCorners, DndContext } from '@dnd-kit/core';
+import { closestCorners, DndContext, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import InProgress from './../Components/InProgress/InProgress';
 import Done from './../Components/Done/Done';
 import useTodo from './../Hooks/useTodo';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 const HomePage = () => {
     const { theme } = useContext(ThemeContext);
@@ -15,7 +15,6 @@ const HomePage = () => {
     useEffect(() => {
         setTasks(AllTasks);
     }, [AllTasks]);
-    console.log(tasks)
     const handleDragEnd = (e) => {
         const { active, over } = e;
 
@@ -40,10 +39,18 @@ const HomePage = () => {
         }
     };
 
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(TouchSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    )
+
     return (
         <div className={`${theme === 'light' ? 'bg-[#111827] text-white' : 'bg-[#f0f0f0] text-black'} h-auto pt-24 pb-10 overflow-hidden`}>
-            <div className='grid grid-cols-3 gap-5 container mx-auto'>
-                <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 container mx-auto'>
+                <DndContext sensors={sensors} onDragEnd={handleDragEnd} collisionDetection={closestCorners} >
                     <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
                         <Todo tasks={tasks} refetch={refetch} />
                         <InProgress />

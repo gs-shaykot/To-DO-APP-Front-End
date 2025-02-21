@@ -20,9 +20,12 @@ const Todo = ({ tasks, refetch }) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
-
+        const newTask = {
+            ...data,
+            id: (tasks.length + 1).toString(),
+        };
         try {
-            await axiosPub.post('/addTask', data);
+            await axiosPub.post('/addTask', newTask);
             e.target.reset();
             await refetch(); // ✅ Ensures refetch is awaited
             document.getElementById("task_modal").close();
