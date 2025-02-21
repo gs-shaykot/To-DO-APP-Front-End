@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../../Provider/ThemeProvider';
 import { FaPen } from 'react-icons/fa';
-import { MdDeleteForever } from 'react-icons/md';
-import useTodo from '../../Hooks/useTodo';
+import { MdDeleteForever } from 'react-icons/md'; 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 

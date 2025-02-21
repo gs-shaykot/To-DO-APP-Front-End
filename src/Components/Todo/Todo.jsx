@@ -8,7 +8,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { ThemeContext } from '../../Provider/ThemeProvider';
 import TodoCard from './TodoCard';
 
-const Todo = ({ AllTasks, refetch }) => {
+const Todo = ({ tasks, refetch }) => {
     const { theme } = useContext(ThemeContext);
     const axiosPub = useAxiosPublic();
 
@@ -30,7 +30,6 @@ const Todo = ({ AllTasks, refetch }) => {
             alert(`Failed to add task: ${error.message}`);
         }
     };
-
 
     // 🔹 Open Edit Modal and Pre-fill Form
     const handleEditClick = (task) => {
@@ -82,10 +81,10 @@ const Todo = ({ AllTasks, refetch }) => {
             </div>
 
             {/* Task Cards */}
-            <div className={`p-5`}>
-                <SortableContext items={AllTasks} strategy={verticalListSortingStrategy}>
+            <div className='p-5'>
+                <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
                     {
-                        AllTasks?.map((data) => (
+                        tasks?.map((data) => (
                             <TodoCard
                                 key={data.id}
                                 Alldata={data}

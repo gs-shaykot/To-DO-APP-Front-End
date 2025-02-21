@@ -1,39 +1,40 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../Provider/ThemeProvider';
 import Todo from '../Components/Todo/Todo';
 import { closestCorners, DndContext } from '@dnd-kit/core';
-import useTodo from '../Hooks/useTodo';
 import InProgress from './../Components/InProgress/InProgress';
 import Done from './../Components/Done/Done';
+import useTodo from './../Hooks/useTodo';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 const HomePage = () => {
-    const { theme } = useContext(ThemeContext)
+    const { theme } = useContext(ThemeContext);
     const [AllTasks, isPending, refetch] = useTodo();
+    const [tasks, setTasks] = useState(AllTasks || []);
 
-    const handleDragEnd = async (e) => {
+    useEffect(() => {
+        setTasks(AllTasks);
+    }, [AllTasks]);
+    console.log(tasks)
+    const handleDragEnd = (e) => {
         const { active, over } = e;
 
-        // Ensure the dragged task is not dropped in the same position
-        if (active.id === over.id) return;
+        if (active.id !== over.id) {
+            const oldIndex = tasks.findIndex(task => task.id === active.id);
+            const newIndex = tasks.findIndex(task => task.id === over.id);
 
-        // Get the dragged task and its new position
-        const newOrder = [...AllTasks];
-        const activeIndex = newOrder.findIndex((task) => task.id === active.id);
-        const overIndex = newOrder.findIndex((task) => task.id === over.id);
+            const newTasks = arrayMove(tasks, oldIndex, newIndex);
+            setTasks(newTasks);
 
-        // Swap the tasks in the array
-        const [removed] = newOrder.splice(activeIndex, 1);
-        newOrder.splice(overIndex, 0, removed);
+            // Update the order in the backend
+            updateTaskOrder(newTasks);
+        }
+    };
 
-        // Optimistically update UI: Reorder tasks locally
-        refetch();
-
-        // Update the order on the backend
+    const updateTaskOrder = async (newTasks) => {
         try {
-            // Assuming you have a field like 'order' or 'position' in your task object
-            await axiosPub.put('/updateTaskOrder', {
-                tasks: newOrder,
-            });
+            await axiosPub.put('/updateTaskOrder', { tasks: newTasks });
+            refetch();
         } catch (error) {
             console.error('Failed to update task order:', error);
         }
@@ -43,9 +44,11 @@ const HomePage = () => {
         <div className={`${theme === 'light' ? 'bg-[#111827] text-white' : 'bg-[#f0f0f0] text-black'} h-auto pt-24 pb-10 overflow-hidden`}>
             <div className='grid grid-cols-3 gap-5 container mx-auto'>
                 <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
-                    <Todo AllTasks={AllTasks} refetch={refetch} />
-                    <InProgress />
-                    <Done />
+                    <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
+                        <Todo tasks={tasks} refetch={refetch} />
+                        <InProgress />
+                        <Done />
+                    </SortableContext>
                 </DndContext>
             </div>
         </div>
