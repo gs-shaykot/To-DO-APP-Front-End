@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { AuthContext } from '../Provider/AuthProvider';
 import { ThemeContext } from '../Provider/ThemeProvider';
 import axios from 'axios';
+import useAxiosPublic from '../Hooks/useAxiosPublic';
 
 const Login = () => {
     const { logInUser } = useContext(AuthContext);
@@ -12,6 +13,7 @@ const Login = () => {
     const location = useLocation();
     const { theme, setTheme, handleToggle } = useContext(ThemeContext)
     const { logInGoogle } = useContext(AuthContext)
+    const axiosPub = useAxiosPublic()
 
     const handleGoogleLogin = () => {
         logInGoogle()
@@ -23,7 +25,7 @@ const Login = () => {
                 });
                 navigate(location?.state ? location.state : '/')
                 const user = { Name: res.user.displayName, email: res.user.email }
-                axios.post('http://localhost:5000/jwt', user, { withCredentials: true })
+                axiosPub.post('/jwt', user, { withCredentials: true })
                     .then(data => {
                         console.log(data)
                     })

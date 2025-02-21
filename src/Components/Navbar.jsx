@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const Navbar = () => {
 
     const { theme, setTheme, handleToggle } = useContext(ThemeContext)
-    const { user, LogOut, setUser } = useContext(AuthContext)  
+    const { user, LogOut, setUser } = useContext(AuthContext)
 
     const SignOut = () => {
         LogOut()
@@ -17,7 +17,7 @@ const Navbar = () => {
                     title: "Succeess",
                     text: "Logged Out Successfully",
                     icon: "success"
-                }); 
+                });
             })
             .catch(error => {
                 Swal.fire({
@@ -29,7 +29,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className={`${theme === 'light' ? 'bg-gray-800 text-white' : 'bg-base-100 text-black'} shadow-md fixed top-0 w-full bg-base-100 z-50`}>
+        <div className={`${theme === 'light' ? 'bg-gray-800 text-white border-b border-b-[#2a3443] ' : 'bg-base-100 text-black'} fixed top-0 w-full bg-base-100 z-50`}>
             <div className="navbar px-4 lg:px-8 flex items-center justify-between">
                 {/* Left - Logo */}
                 <div className="flex-1">
