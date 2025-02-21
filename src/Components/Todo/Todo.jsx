@@ -1,54 +1,53 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { IoIosAddCircleOutline } from "react-icons/io";
-import axios from 'axios';
-import useAxiosPublic from '../../Hooks/useAxiosPublic';
-import { FaPen } from "react-icons/fa";
-import { MdDeleteForever } from "react-icons/md";
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { ThemeContext } from '../../Provider/ThemeProvider';
+import React, { useContext, useState } from 'react';
 import TodoCard from './TodoCard';
+import { v4 as uuidv4 } from 'uuid';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import useAxiosPublic from './../../Hooks/useAxiosPublic';
+import { ThemeContext } from '../../Provider/ThemeProvider';
+import { IoIosAddCircleOutline } from 'react-icons/io';
 
 const Todo = ({ tasks, refetch }) => {
     const { theme } = useContext(ThemeContext);
     const axiosPub = useAxiosPublic();
 
-    // 🔹 state to track selected task for editing
     const [selectedTask, setSelectedTask] = useState(null);
 
-    // 🔹 Handle Add Task Submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
         const newTask = {
             ...data,
-            id: (tasks.length + 1).toString(),
+            id: uuidv4(),
         };
         try {
             await axiosPub.post('/addTask', newTask);
             e.target.reset();
-            await refetch(); // ✅ Ensures refetch is awaited
+            await refetch();
             document.getElementById("task_modal").close();
         } catch (error) {
             alert(`Failed to add task: ${error.message}`);
         }
     };
 
-    // 🔹 Open Edit Modal and Pre-fill Form
     const handleEditClick = (task) => {
         setSelectedTask(task);
         document.getElementById("task_modal").showModal();
     };
 
-    // 🔹 Handle Update Task
     const handleUpdate = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const updatedData = Object.fromEntries(formData.entries());
+        const newUpdatedTask = {
+            ...updatedData,
+            id: selectedTask.id,
+        };
 
         try {
-            await axiosPub.put(`/addTask/${selectedTask._id}`, updatedData);
-            refetch();
+            await axiosPub.put(`/addTask/${selectedTask._id}`, newUpdatedTask);
+            await refetch();
+            e.target.reset();
             document.getElementById("task_modal").close();
             setSelectedTask(null);
         } catch (error) {
@@ -56,7 +55,6 @@ const Todo = ({ tasks, refetch }) => {
         }
     };
 
-    // 🔹 Handle Delete Task
     const handleDelete = async (id) => {
         try {
             const res = await axiosPub.delete(`/addTask/${id}`);
@@ -70,7 +68,6 @@ const Todo = ({ tasks, refetch }) => {
 
     return (
         <div className={`${theme === 'light' ? 'bg-gray-800 text-white border-b border-b-[#2a3443]' : 'bg-base-100 text-black'} rounded-md`}>
-            {/* Header Title */}
             <div>
                 <div className={`${theme === 'light' ? 'border-[#31353c]' : 'border-[#374151]'} border-b p-4 flex justify-between items-center`}>
                     <h1>To Do</h1>
@@ -83,9 +80,8 @@ const Todo = ({ tasks, refetch }) => {
                 </div>
             </div>
 
-            {/* Task Cards */}
             <div className='p-5'>
-                <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
+                <SortableContext items={tasks.map(task => task.id)} strategy={verticalListSortingStrategy}>
                     {
                         tasks?.map((data) => (
                             <TodoCard
@@ -97,8 +93,6 @@ const Todo = ({ tasks, refetch }) => {
                     }
                 </SortableContext>
             </div>
-
-            {/* Update & Add Modal */}
 
             <dialog id="task_modal" className="modal">
                 <div className={`${theme === 'light' ? '!bg-[#1f2937] text-white' : ''} modal-box`}>

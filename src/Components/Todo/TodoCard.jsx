@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { ThemeContext } from '../../Provider/ThemeProvider';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities'; 
 import { FaPen } from 'react-icons/fa';
-import { MdDeleteForever } from 'react-icons/md'; 
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { MdDeleteForever } from 'react-icons/md';
+import { ThemeContext } from '../../Provider/ThemeProvider';
 
 const TodoCard = ({ Alldata, handleEditClick, handleDelete }) => {
     const { theme } = useContext(ThemeContext);
@@ -24,7 +24,6 @@ const TodoCard = ({ Alldata, handleEditClick, handleDelete }) => {
             className={`${theme === 'light' ? 'border-[#31353c] bg-[#1f2937] text-white' : 'border-[#374151] bg-base-100 text-black'} 
                         w-full border shadow-md box-border p-4 rounded-md mb-3 touch-none`}
         >
-            {/* Header with Title and Actions */}
             <div className='flex justify-between items-center mb-2'>
                 <h1 className="font-semibold text-lg">{Alldata?.title}</h1>
                 <div className='flex gap-2 text-gray-500 cursor-pointer'>
@@ -33,12 +32,10 @@ const TodoCard = ({ Alldata, handleEditClick, handleDelete }) => {
                 </div>
             </div>
 
-            {/* Task Description */}
             <p className="text-sm mb-3">
                 {Alldata?.description}
             </p>
 
-            {/* Footer with Badge & Due Date */}
             <div className="flex justify-between items-center">
                 <span className="text-xs px-2 py-1 rounded-md bg-purple-200 text-purple-700">
                     {Alldata?.badge}
