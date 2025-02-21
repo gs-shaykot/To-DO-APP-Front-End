@@ -5,10 +5,11 @@ import { useQuery } from '@tanstack/react-query';
 const useTodo = () => {
     const axiosPub = useAxiosPublic()
     const { data: AllTasks = [], isPending, refetch } = useQuery({
-        queryKey: ['user'],
+        queryKey: ['AllTasks'],
         queryFn: async () => {
             const res = await axiosPub.get('/addTask')
-            return res.data
+            // Sort tasks by order field before returning
+            return res.data.sort((a, b) => a.order - b.order);
         }
     })
     if (isPending)
