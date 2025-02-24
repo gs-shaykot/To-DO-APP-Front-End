@@ -138,7 +138,7 @@ const DragAndDrop = () => {
                     ))}
                 </div>
             </DragDropContext>
-            <TaskCard selectedTask={selectedTask} setSelectedTask={setSelectedTask} />
+            <TaskCard selectedTask={selectedTask} setSelectedTask={setSelectedTask} refetch={refetch} />
         </>
     );
 };

@@ -1,11 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { ThemeContext } from '../Provider/ThemeProvider';
+import useAxiosPublic from '../0.Original Components/hooks/useAxiosPublic';
 
-const TaskCard = ({ selectedTask, setSelectedTask }) => { 
+const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
     const { theme } = useContext(ThemeContext);
-    const { register, handleSubmit, reset, setValue } = useForm();  
-    
+    const { register, handleSubmit, reset, setValue } = useForm();
+    const axiosPub = useAxiosPublic()
     useEffect(() => {
         if (selectedTask) {
             setValue("title", selectedTask.title || "");
@@ -13,17 +14,23 @@ const TaskCard = ({ selectedTask, setSelectedTask }) => {
             setValue("dueDate", selectedTask.dueDate || "");
             setValue("description", selectedTask.description || "");
         } else {
-            reset();  
+            reset();
         }
     }, [selectedTask, setValue, reset]);
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
         if (selectedTask) {
             console.log("Updating Task...");
             setSelectedTask(null);
-        } else {
-            console.log("Adding Task...");
+        }
+        else {
+            const FinalData = { ...data, status: "Todo" }
+            console.log("This Will be added: ", FinalData)
+            const res = await axiosPub.post('/addTask', FinalData)
+            if (res.status === 200) {
+                alert('posted')
+                refetch()
+            }
         }
         reset();
         document.getElementById("my_modal_3").close();
