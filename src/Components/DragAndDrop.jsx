@@ -1,6 +1,6 @@
 // explain each & every steps of this code. with sample example. start with the return part.
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from './../Provider/ThemeProvider';
 import useTodo from '../0.Original Components/Hooks/useTodo';
 
@@ -66,8 +66,13 @@ const DragAndDrop = () => {
     ]
 
     const [AllTasks, isPending, refetch] = useTodo()
-    const [tasks, setTasks] = useState(initialData);
+    const [tasks, setTasks] = useState([]);
     const { theme } = useContext(ThemeContext)
+    useEffect(() => {
+        if (AllTasks.length > 0) {
+            setTasks(AllTasks); // Update tasks when data is fetched
+        }
+    }, [AllTasks]);
 
     const columns = {
         Todo: 'Todo',
@@ -78,6 +83,51 @@ const DragAndDrop = () => {
     const getItemsForColumn = (status) => {
         return tasks.filter((task) => task.status === status);
     };
+
+    // const handleDragEnd = (result) => {
+    //     const { destination, source, draggableId } = result;
+    //     if (!destination) return;
+
+    //     if (destination.droppableId === source.droppableId && destination.index === source.index) {
+    //         return; // If dropped at the same position, do nothing
+    //     }
+
+    //     // Clone tasks to avoid modifying state directly
+    //     const updatedTasks = [...tasks];
+
+    //     // Find the dragged item and remove it from the list
+    //     const draggedItemIndex = updatedTasks.findIndex(task => task.id === draggableId);
+    //     const draggedItem = updatedTasks[draggedItemIndex];
+    //     updatedTasks.splice(draggedItemIndex, 1);
+
+    //     // Update status to match the destination column
+    //     draggedItem.status = destination.droppableId;
+
+    //     // Get all tasks in the destination column (sorted correctly)
+    //     const destinationColumnItems = updatedTasks.filter(task => task.status === destination.droppableId);
+
+    //     // Calculate the correct index to insert
+    //     let insertIndex = destination.index;
+    //     if (insertIndex > destinationColumnItems.length) {
+    //         insertIndex = destinationColumnItems.length; // If dragging beyond the last item, add to the end
+    //     }
+
+    //     // Find the index where to insert in the main `updatedTasks` array
+    //     const actualInsertIndex = updatedTasks.findIndex(
+    //         (task, index) =>
+    //             task.status === destination.droppableId &&
+    //             destinationColumnItems.indexOf(task) === insertIndex
+    //     );
+
+    //     // If actualInsertIndex is not found, place at the end
+    //     const finalIndex = actualInsertIndex !== -1 ? actualInsertIndex : updatedTasks.length;
+
+    //     // Insert the dragged item at the correct position
+    //     updatedTasks.splice(finalIndex, 0, draggedItem);
+
+    //     // Update state
+    //     setTasks(updatedTasks);
+    // };
 
     const handleDragEnd = (result) => {
         const { destination, source, draggableId } = result;
@@ -91,7 +141,7 @@ const DragAndDrop = () => {
         const updatedTasks = [...tasks];
 
         // Find the dragged item and remove it from the list
-        const draggedItemIndex = updatedTasks.findIndex(task => task.id === draggableId);
+        const draggedItemIndex = updatedTasks.findIndex(task => task._id.toString() === draggableId);
         const draggedItem = updatedTasks[draggedItemIndex];
         updatedTasks.splice(draggedItemIndex, 1);
 
@@ -124,6 +174,7 @@ const DragAndDrop = () => {
         setTasks(updatedTasks);
     };
 
+
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             <div className='grid grid-cols-3 gap-5 container mx-auto pb-10'>
@@ -137,7 +188,7 @@ const DragAndDrop = () => {
                             >
                                 <h3 className='border-b border-black mb-3 p-2'>{columnId}</h3>
                                 {getItemsForColumn(columnId).map((item, index) => (
-                                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                                    <Draggable key={item._id} draggableId={item._id.toString()} index={index}>
                                         {(provided) => (
                                             <div
                                                 ref={provided.innerRef}
