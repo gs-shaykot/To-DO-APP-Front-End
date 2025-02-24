@@ -1,0 +1,59 @@
+
+const initialData = [
+    {
+        "id": "67b94b836bd413b875d8c4c7",
+        "title": "Design new landing page",
+        "description": "Create a modern and engaging landing page design for our new product launch",
+        "badge": "Design",
+        "dueDate": "2025-02-28",
+        "status": "Todo",
+    },
+    {
+        "id": "67b94b836bd413b875d8c4c8",
+        "title": "Update user documentation",
+        "description": "Review and update the existing user documentation with new features",
+        "badge": "Documentation",
+        "dueDate": "2025-02-22",
+        "status": "Todo",
+    },
+    {
+        "id": "67b9aca2acaaf23e2cc662c9",
+        "title": "test task",
+        "badge": "test",
+        "dueDate": "2025-02-22",
+        "description": "adaf fafafadf sd fa",
+        "status": "Todo",
+    },
+    {
+        "id": "67b9af76cda7114107423c1e",
+        "title": "akil test",
+        "badge": "test",
+        "dueDate": "2025-02-22",
+        "description": "adjklkjdad lfadf",
+        "status": "Todo",
+    },
+    {
+        "id": "67b9bbd1de4540601895f546",
+        "title": "asdasda",
+        "badge": "dassdasd",
+        "dueDate": "2025-02-22",
+        "description": "asda sdasd asd",
+        "status": "Todo",
+    },
+    {
+        "id": "67bc78967405325daa2f77bf",
+        "title": "Design new landing page",
+        "description": "Create a modern and engaging landing page design for our new product launch",
+        "badge": "Design",
+        "dueDate": "2025-02-28",
+        "status": "Done",
+    },
+    {
+        "id": "67bc78967405325daa2f77c0",
+        "title": "adhajdhkajdhajskda",
+        "description": "Create a modern and engaging landing page design for our new product launch",
+        "badge": "Design",
+        "dueDate": "2025-02-28",
+        "status": "In Progress",
+    }
+]
