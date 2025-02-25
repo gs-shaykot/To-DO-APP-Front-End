@@ -6,6 +6,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaPen } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import TaskCard from './TaskCard';
+import useAxiosPublic from '../0.Original Components/hooks/useAxiosPublic';
 
 const DragAndDrop = () => {
 
@@ -13,6 +14,7 @@ const DragAndDrop = () => {
     const [tasks, setTasks] = useState([]);
     const [selectedTask, setSelectedTask] = useState(null);
     const { theme } = useContext(ThemeContext)
+    const axiosPub = useAxiosPublic()
 
     useEffect(() => {
         if (AllTasks.length > 0) {
@@ -28,6 +30,14 @@ const DragAndDrop = () => {
     const handleEdit = (task) => {
         setSelectedTask(task)
         document.getElementById("my_modal_3").showModal();
+    }
+    
+    const handleDelete = async (id) => {
+        const res = await axiosPub.delete(`/addTask/${id}`)
+        if (res.status === 200) {
+            alert('deleted')
+            refetch()
+        }
     }
 
     const columns = {
@@ -101,7 +111,11 @@ const DragAndDrop = () => {
                                 >
                                     <div className='flex justify-between items-center p-2 px-4 border-b border-black mb-3'>
                                         <h3>{columnId}</h3>
-                                        <IoIosAddCircleOutline onClick={openModal} className='text-lg cursor-pointer' />
+                                        {
+                                            columnId === "Todo" ?
+                                                <IoIosAddCircleOutline onClick={openModal} className='text-lg cursor-pointer' />
+                                                : <></>
+                                        }
                                     </div>
                                     {getItemsForColumn(columnId).map((item, index) => (
                                         <Draggable key={item._id} draggableId={item._id.toString()} index={index}>
@@ -119,7 +133,7 @@ const DragAndDrop = () => {
                                                         <h4 className='text-lg font-semibold'>{item.title}</h4>
                                                         <div className='flex gap-2 justify-between items-center cursor-pointer'>
                                                             <FaPen onClick={() => handleEdit(item)} />
-                                                            <MdDelete />
+                                                            <MdDelete onClick={() => handleDelete(item._id)} />
                                                         </div>
                                                     </div>
                                                     <p className='my-2'>{item.description}</p>

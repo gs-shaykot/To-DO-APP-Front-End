@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form';
 import { ThemeContext } from '../Provider/ThemeProvider';
 import useAxiosPublic from '../0.Original Components/hooks/useAxiosPublic';
 
+// fix the form update logic.
 const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
     const { theme } = useContext(ThemeContext);
     const { register, handleSubmit, reset, setValue } = useForm();
     const axiosPub = useAxiosPublic()
+
     useEffect(() => {
         if (selectedTask) {
             setValue("title", selectedTask.title || "");
@@ -20,8 +22,12 @@ const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
 
     const onSubmit = async (data) => {
         if (selectedTask) {
-            console.log("Updating Task...");
-            setSelectedTask(null);
+            const res = await axiosPub.patch(`/addTask/${selectedTask._id}`, data)
+            if (res.status === 200) {
+                alert("Task updated successfully!");
+                refetch(); // Refetch after update
+                setSelectedTask(null); // Clear selected task
+            }
         }
         else {
             const FinalData = { ...data, status: "Todo" }
