@@ -31,7 +31,7 @@ const DragAndDrop = () => {
         setSelectedTask(task)
         document.getElementById("my_modal_3").showModal();
     }
-    
+
     const handleDelete = async (id) => {
         const res = await axiosPub.delete(`/addTask/${id}`)
         if (res.status === 200) {
@@ -50,16 +50,15 @@ const DragAndDrop = () => {
         return tasks.filter((task) => task.status === status);
     };
 
-    const handleDragEnd = (result) => {
-        console.log(result)
+    const handleDragEnd = async (result) => {
         const { destination, source, draggableId } = result;
         if (!destination) return;
 
         if (destination.droppableId === source.droppableId && destination.index === source.index) {
-            return; // If dropped at the same position, do nothing
+            return; // No change in position
         }
 
-        // Clone tasks to avoid modifying state directly
+        // Clone the tasks to avoid mutating state directly
         const updatedTasks = [...tasks];
 
         // Find the dragged item and remove it from the list
@@ -73,27 +72,31 @@ const DragAndDrop = () => {
         // Get all tasks in the destination column (sorted correctly)
         const destinationColumnItems = updatedTasks.filter(task => task.status === destination.droppableId);
 
-        // Calculate the correct index to insert
-        let insertIndex = destination.index;
-        if (insertIndex > destinationColumnItems.length) {
-            insertIndex = destinationColumnItems.length; // If dragging beyond the last item, add to the end
-        }
-
-        // Find the index where to insert in the main `updatedTasks` array
-        const actualInsertIndex = updatedTasks.findIndex(
-            (task, index) =>
-                task.status === destination.droppableId &&
-                destinationColumnItems.indexOf(task) === insertIndex
-        );
-
-        // If actualInsertIndex is not found, place at the end
-        const finalIndex = actualInsertIndex !== -1 ? actualInsertIndex : updatedTasks.length;
-
         // Insert the dragged item at the correct position
-        updatedTasks.splice(finalIndex, 0, draggedItem);
+        destinationColumnItems.splice(destination.index, 0, draggedItem);
+
+        // Assign new order values based on position
+        destinationColumnItems.forEach((task, index) => {
+            task.order = index + 1;
+        });
+
+        // Merge updated column items into main task list
+        const finalUpdatedTasks = updatedTasks.filter(task => task.status !== destination.droppableId)
+            .concat(destinationColumnItems);
 
         // Update state
-        setTasks(updatedTasks);
+        setTasks(finalUpdatedTasks);
+
+        // Update database (call API)
+        try {
+            await axiosPub.patch(`/addTask/${draggedItem._id}`, {
+                status: draggedItem.status,
+                order: draggedItem.order,
+            });
+            console.log("Updated task position in DB:", draggedItem);
+        } catch (error) {
+            console.error("Failed to update task position:", error);
+        }
     };
 
 
