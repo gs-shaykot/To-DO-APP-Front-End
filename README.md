@@ -63,11 +63,6 @@ The application is built using **React (Vite.js) and Node.js (Express.js)**, wit
 4. **Drag-and-drop functionality** using `@hello-pangea/dnd`.  
 
 ---
-## **Bonus Features (Optional)**
-1. **Dark Mode** toggle for better user experience.  
-2. **Task Due Dates** with visual indicators (e.g., overdue tasks in red).  
-
----
 ## ⚙️ **Technologies Used**
 - **Frontend**: React (Vite.js), DaisyUI, TanStack Query  
 - **Backend**: Node.js, Express.js, MongoDB  
@@ -95,3 +90,12 @@ The application is built using **React (Vite.js) and Node.js (Express.js)**, wit
   "sweetalert2": "^11.17.2",
   "uuid": "^11.1.0"
 }
+```
+
+---
+
+## **Bonus Features (Optional)**
+1. **Dark Mode** toggle for better user experience.  
+2. **Task Due Dates** with visual indicators (e.g., overdue tasks in red).  
+
+---
