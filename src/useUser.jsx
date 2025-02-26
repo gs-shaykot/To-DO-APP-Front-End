@@ -6,7 +6,7 @@ const useUser = () => {
     const { data: dbUser = [], isPending, refetch } = useQuery({
         queryKey: ['user'],
         queryFn: async () => {
-            const res = await axios.get('http://localhost:5000/users')
+            const res = await axios.get(' https://todo-six-kappa-51.vercel.app/users')
             return res.data
         }
     })

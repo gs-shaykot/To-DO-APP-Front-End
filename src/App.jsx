@@ -15,7 +15,7 @@ function App() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post('http://localhost:5000/users', data);
+      const res = await axios.post(' https://todo-six-kappa-51.vercel.app/users', data);
       console.log(res);
       refetch();
     } catch (error) {

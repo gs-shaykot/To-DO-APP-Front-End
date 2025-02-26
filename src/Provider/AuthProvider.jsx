@@ -35,13 +35,13 @@ const AuthProvider = ({ children }) => {
                 setUser(currentUser);
                 setLoader(false)
                 const user = { Name: currentUser.displayName, email: currentUser.email }
-                axios.post('http://localhost:5000/jwt', user, { withCredentials: true })
+                axios.post(' https://todo-six-kappa-51.vercel.app/jwt', user, { withCredentials: true })
                     .then(data => {
                         console.log(data)
                     })
             } else {
                 console.log("No user signed in");
-                axios.post('http://localhost:5000/jwtlogout  ', {}, { withCredentials: true })
+                axios.post(' https://todo-six-kappa-51.vercel.app/jwtlogout  ', {}, { withCredentials: true })
                     .then(data => {
                         console.log(data)
                     })

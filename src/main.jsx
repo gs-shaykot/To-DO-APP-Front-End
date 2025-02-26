@@ -13,6 +13,7 @@ import HomePage from './Layout/HomePage.jsx';
 import ThemeProvider from './Provider/ThemeProvider.jsx';
 import Login from './Page/Login.jsx';
 import AuthProvider from './Provider/AuthProvider.jsx';
+import PrivateRoute from './Route/PrivateRoute';
 
 const queryClient = new QueryClient()
 
@@ -20,10 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    children: [
+    children: [ 
       {
         path: '/',
-        element: <HomePage />
+        element: <PrivateRoute><HomePage /></PrivateRoute>
       },
       {
         path: '/login',
