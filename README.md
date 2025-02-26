@@ -1,4 +1,4 @@
-# Kanban Board Task Management App
+# [Quick-Shed](https://todo-a4bd8.web.app/)
 ---
 # [Server Repository](https://github.com/gs-shaykot/To-Do-App-Server-End)  
 ---
@@ -128,6 +128,8 @@ jwt_Secret="your credential"
 
 ## **Bonus Features (Optional)**
 1. **Dark Mode** toggle for better user experience.  
-2. **Task Due Dates** with visual indicators (e.g., overdue tasks in red).  
-
+2. **Task Due Dates** with visual indicators (e.g., overdue tasks in red).   
 ---
+## **Live Link & Server Repo**
+1. Live Link: https://todo-a4bd8.web.app/
+2. Server Repo: https://github.com/gs-shaykot/To-Do-App-Server-End
