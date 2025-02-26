@@ -91,7 +91,14 @@ The application is built using **React (Vite.js) and Node.js (Express.js)**, wit
   "uuid": "^11.1.0"
 }
 ```
+---
+## **Installation Process**
 
+### **1. Clone the Repository**
+```sh
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+```
 ---
 
 ## **Bonus Features (Optional)**
