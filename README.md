@@ -99,6 +99,10 @@ The application is built using **React (Vite.js) and Node.js (Express.js)**, wit
 git clone https://github.com/your-username/your-repo.git
 cd your-repo
 ```
+### **1. Install Dependencies(Front End)**
+```sh
+npm install @hello-pangea/dnd@latest @tanstack/react-query@latest axios@latest firebase@latest localforage@latest match-sorter@latest react@latest react-dom@latest react-hook-form@latest react-icons@latest react-router-dom@latest sort-by@latest sweetalert2@latest 
+```
 ---
 
 ## **Bonus Features (Optional)**
