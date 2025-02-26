@@ -99,9 +99,30 @@ The application is built using **React (Vite.js) and Node.js (Express.js)**, wit
 git clone https://github.com/your-username/your-repo.git
 cd your-repo
 ```
-### **1. Install Dependencies(Front End)**
+### **2. Install Dependencies(Front End)**
 ```sh
 npm install @hello-pangea/dnd@latest @tanstack/react-query@latest axios@latest firebase@latest localforage@latest match-sorter@latest react@latest react-dom@latest react-hook-form@latest react-icons@latest react-router-dom@latest sort-by@latest sweetalert2@latest 
+```
+### **3. Setup ENV**
+```sh
+VITE_FIREBASE_API_KEY="your credential"
+VITE_FIREBASE_AUTH_DOMAIN="your credential"
+VITE_FIREBASE_PROJECT_ID="your credential"
+VITE_FIREBASE_STORAGE_BUCKET="your credential"
+VITE_FIREBASE_MESSAGING_SENDER_ID="your credential"
+VITE_FIREBASE_APP_ID="your credential"
+ 
+```
+### **4. Setup Server**
+```sh
+https://github.com/gs-shaykot/To-Do-App-Server-End.git
+npm install cookie-parser@latest cors@latest dotenv@latest express@latest jsonwebtoken@latest mongodb@latest nodemon@latest
+```
+### **4. Setup Server ENV**
+```sh
+db_user="your credential"
+db_pass="your credential"
+jwt_Secret="your credential"
 ```
 ---
 
