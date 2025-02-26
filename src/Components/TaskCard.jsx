@@ -2,12 +2,14 @@ import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { ThemeContext } from '../Provider/ThemeProvider';
 import useAxiosPublic from '../0.Original Components/hooks/useAxiosPublic';
+import useTodo from '../0.Original Components/Hooks/useTodo';
 
 // fix the form update logic.
 const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
     const { theme } = useContext(ThemeContext);
     const { register, handleSubmit, reset, setValue } = useForm();
     const axiosPub = useAxiosPublic()
+    const [AllTasks] = useTodo()
 
     useEffect(() => {
         if (selectedTask) {
@@ -21,20 +23,25 @@ const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
     }, [selectedTask, setValue, reset]);
 
     const onSubmit = async (data) => {
+        const date = new Date();
+        const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1)
+            .toString()
+            .padStart(2, '0')}/${date.getFullYear()}`;
+        const FinalData = {
+            ...data,
+            createdAt: formattedDate,
+            order: AllTasks.length + 1
+        } 
         if (selectedTask) {
-            const res = await axiosPub.patch(`/addTask/${selectedTask._id}`, data)
+            const res = await axiosPub.put(`/addTask/${selectedTask._id}`, FinalData)
             if (res.status === 200) {
-                alert("Task updated successfully!");
                 refetch(); // Refetch after update
                 setSelectedTask(null); // Clear selected task
             }
         }
         else {
-            const FinalData = { ...data, status: "Todo" }
-            console.log("This Will be added: ", FinalData)
             const res = await axiosPub.post('/addTask', FinalData)
             if (res.status === 200) {
-                alert('posted')
                 refetch()
             }
         }
@@ -52,6 +59,7 @@ const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
                         <input
                             type="text"
                             {...register("title", { required: true })}
+                            maxLength={50}
                             placeholder="Title"
                             className={`input input-bordered w-full ${theme === 'light' ? 'bg-[#374151] text-white' : ''}`}
                         />
@@ -68,6 +76,19 @@ const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
                         />
                     </div>
 
+                    {/* Category Date */}
+                    <div className="form-control">
+                        <label className="label"><span className="label-text">List Status</span></label>
+                        <select
+                            {...register("status", { required: true })}
+                            className={`select select-bordered w-full ${theme === 'light' ? 'bg-[#374151] text-white' : ''}`}>
+                            <option disabled selected>Select a initial Status</option>
+                            <option>Todo</option>
+                            <option>In Progress</option>
+                            <option>Done</option>
+                        </select>
+                    </div>
+
                     {/* Due Date */}
                     <div className="form-control">
                         <label className="label"><span className="label-text">Due Date</span></label>
@@ -82,7 +103,8 @@ const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
                     <div className="form-control">
                         <label className="label"><span className="label-text">Description</span></label>
                         <textarea
-                            {...register("description", { required: true })}
+                            maxLength={200}
+                            {...register("description")}
                             placeholder="Description"
                             className={`textarea textarea-bordered w-full ${theme === 'light' ? 'bg-[#374151] text-white' : ''}`}
                         />

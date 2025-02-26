@@ -1,3 +1,4 @@
+// save all drag & drops in database. improve the code. only save if the item is not been dropped in same position.
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import React, { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from './../Provider/ThemeProvider';
@@ -33,9 +34,9 @@ const DragAndDrop = () => {
     }
 
     const handleDelete = async (id) => {
+        console.log(id)
         const res = await axiosPub.delete(`/addTask/${id}`)
-        if (res.status === 200) {
-            alert('deleted')
+        if (res.status === 200) { 
             refetch()
         }
     }
@@ -51,12 +52,14 @@ const DragAndDrop = () => {
     };
 
     const handleDragEnd = async (result) => {
+        console.log(result)
         const { destination, source, draggableId } = result;
         if (!destination) return;
 
         if (destination.droppableId === source.droppableId && destination.index === source.index) {
             return; // No change in position
         }
+
 
         // Clone the tasks to avoid mutating state directly
         const updatedTasks = [...tasks];
@@ -93,6 +96,13 @@ const DragAndDrop = () => {
                 status: draggedItem.status,
                 order: draggedItem.order,
             });
+
+            await axiosPub.post('/logsEntry', {
+                id: draggableId,
+                from: source.droppableId,
+                to: destination.droppableId,
+            });
+
             console.log("Updated task position in DB:", draggedItem);
         } catch (error) {
             console.error("Failed to update task position:", error);
@@ -132,6 +142,7 @@ const DragAndDrop = () => {
                                                     }}
                                                     className={`${theme === "light" ? 'bg-transparent' : 'bg-white'} border border-gray-400 p-2 m-3 rounded-lg `}
                                                 >
+                                                    <p className='text-xs'>Created AT: {item.createdAt}</p>
                                                     <div className='flex justify-between items-center'>
                                                         <h4 className='text-lg font-semibold'>{item.title}</h4>
                                                         <div className='flex gap-2 justify-between items-center cursor-pointer'>
@@ -142,6 +153,7 @@ const DragAndDrop = () => {
                                                     <p className='my-2'>{item.description}</p>
                                                     <div className='flex justify-between'>
                                                         <span className={`badge bg-sky-400 text-blue-700 font-semibold`}>{item.badge}</span>
+
                                                         <h1 className='text-xs'>Due: {item.dueDate}</h1>
                                                     </div>
                                                 </div>
