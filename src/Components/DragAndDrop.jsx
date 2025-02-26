@@ -1,13 +1,13 @@
 // save all drag & drops in database. improve the code. only save if the item is not been dropped in same position.
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import React, { useContext, useEffect, useState } from 'react';
-import { ThemeContext } from './../Provider/ThemeProvider';
-import useTodo from '../0.Original Components/Hooks/useTodo';
+import { ThemeContext } from './../Provider/ThemeProvider'; 
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaPen } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-import TaskCard from './TaskCard';
-import useAxiosPublic from '../0.Original Components/hooks/useAxiosPublic';
+import TaskCard from './TaskCard'; 
+import useAxiosPublic from './../Hooks/useAxiosPublic';
+import useTodo from './../Hooks/useTodo';
 
 const DragAndDrop = () => {
 
@@ -36,7 +36,7 @@ const DragAndDrop = () => {
     const handleDelete = async (id) => {
         console.log(id)
         const res = await axiosPub.delete(`/addTask/${id}`)
-        if (res.status === 200) { 
+        if (res.status === 200) {
             refetch()
         }
     }
@@ -113,7 +113,7 @@ const DragAndDrop = () => {
     return (
         <>
             <DragDropContext onDragEnd={handleDragEnd}>
-                <div className='grid grid-cols-3 gap-5 container mx-auto pb-10'>
+                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-11/12 md:w-full container mx-auto pb-10'>
                     {Object.values(columns).map((columnId) => (
                         <Droppable key={columnId} droppableId={columnId} >
                             {(provided) => (
@@ -144,7 +144,7 @@ const DragAndDrop = () => {
                                                 >
                                                     <p className='text-xs'>Created AT: {item.createdAt}</p>
                                                     <div className='flex justify-between items-center'>
-                                                        <h4 className='text-lg font-semibold'>{item.title}</h4>
+                                                        <h4 className='text-base md:text-lg font-semibold'>{item.title}</h4>
                                                         <div className='flex gap-2 justify-between items-center cursor-pointer'>
                                                             <FaPen onClick={() => handleEdit(item)} />
                                                             <MdDelete onClick={() => handleDelete(item._id)} />

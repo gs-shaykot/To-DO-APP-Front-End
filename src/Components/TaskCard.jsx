@@ -1,10 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { ThemeContext } from '../Provider/ThemeProvider';
-import useAxiosPublic from '../0.Original Components/hooks/useAxiosPublic';
-import useTodo from '../0.Original Components/Hooks/useTodo';
-
-// fix the form update logic.
+import { ThemeContext } from '../Provider/ThemeProvider';  
+import useTodo from '../Hooks/useTodo';
+import useAxiosPublic from '../Hooks/useAxiosPublic';
+ 
 const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
     const { theme } = useContext(ThemeContext);
     const { register, handleSubmit, reset, setValue } = useForm();
