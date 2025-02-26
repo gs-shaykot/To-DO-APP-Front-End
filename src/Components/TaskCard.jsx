@@ -81,7 +81,7 @@ const TaskCard = ({ selectedTask, setSelectedTask, refetch }) => {
                         <select
                             {...register("status", { required: true })}
                             className={`select select-bordered w-full ${theme === 'light' ? 'bg-[#374151] text-white' : ''}`}>
-                            <option disabled selected>Select a initial Status</option>
+                            <option disabled>Select a initial Status</option>
                             <option>Todo</option>
                             <option>In Progress</option>
                             <option>Done</option>

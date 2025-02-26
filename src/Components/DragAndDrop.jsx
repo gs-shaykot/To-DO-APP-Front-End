@@ -1,11 +1,11 @@
 // save all drag & drops in database. improve the code. only save if the item is not been dropped in same position.
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import React, { useContext, useEffect, useState } from 'react';
-import { ThemeContext } from './../Provider/ThemeProvider'; 
+import { ThemeContext } from './../Provider/ThemeProvider';
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { FaPen } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-import TaskCard from './TaskCard'; 
+import TaskCard from './TaskCard';
 import useAxiosPublic from './../Hooks/useAxiosPublic';
 import useTodo from './../Hooks/useTodo';
 
@@ -152,10 +152,15 @@ const DragAndDrop = () => {
                                                     </div>
                                                     <p className='my-2'>{item.description}</p>
                                                     <div className='flex justify-between'>
-                                                        <span className={`badge bg-sky-400 text-blue-700 font-semibold`}>{item.badge}</span>
-
-                                                        <h1 className='text-xs'>Due: {item.dueDate}</h1>
+                                                        <span className='badge bg-sky-400 text-blue-700 font-semibold'>{item.badge}</span> 
+                                                        {/* Check if dueDate has passed */}
+                                                        {new Date(item.dueDate) < new Date() && (
+                                                            <h1 className='text-xs text-red-500 font-semibold'>
+                                                                Due: {item.dueDate} (Overdue)
+                                                            </h1>
+                                                        )}
                                                     </div>
+
                                                 </div>
                                             )}
                                         </Draggable>

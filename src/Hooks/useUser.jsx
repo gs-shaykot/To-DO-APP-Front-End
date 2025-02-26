@@ -1,17 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import useAxiosPublic from './useAxiosPublic';
 
 const useUser = () => {
-
+    const axiosPub = useAxiosPublic()
     const { data: dbUser = [], isPending, refetch } = useQuery({
         queryKey: ['user'],
         queryFn: async () => {
-            const res = await axios.get(' https://todo-six-kappa-51.vercel.app/users')
+            const res = await axiosPub.get('/users')
             return res.data
         }
     })
-    if (isPending)
-        <span className="loading loading-ring loading-lg"></span>
     return [dbUser, isPending, refetch]
 };
 

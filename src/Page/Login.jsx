@@ -1,11 +1,12 @@
 // make the lebel white on theme ternary condition. also implement the ternary operation to make the input's bg transparent and base-100
-import React, { useContext } from 'react';
+import React, { use, useContext } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../Provider/AuthProvider';
 import { ThemeContext } from '../Provider/ThemeProvider';
 import axios from 'axios';
 import useAxiosPublic from '../Hooks/useAxiosPublic';
+import useUser from './../Hooks/useUser';
 
 const Login = () => {
     const { logInUser } = useContext(AuthContext);
@@ -14,6 +15,7 @@ const Login = () => {
     const { theme, setTheme, handleToggle } = useContext(ThemeContext)
     const { logInGoogle } = useContext(AuthContext)
     const axiosPub = useAxiosPublic()
+    const [dbUser, isPending, refetch] = useUser()
 
     const handleGoogleLogin = () => {
         logInGoogle()
@@ -24,13 +26,19 @@ const Login = () => {
                     icon: "success"
                 });
                 navigate(location?.state ? location.state : '/')
-                const user = { Name: res.user.displayName, email: res.user.email }
+                const user = { Name: res?.user?.displayName, email: res?.user?.email }
                 axiosPub.post('/jwt', user, { withCredentials: true })
                     .then(data => {
-                        console.log(data)
+                        console.log("Token Added", user)
                     })
+                const isuserExist = dbUser.find(u => u.email === user.email)
+                if (!isuserExist) {
+                    axiosPub.post('/users', user)
+                        .then(res => console.log("user added: ", res))
+                }
             })
             .catch(error => {
+                console.log(error)
                 Swal.fire({
                     title: error.message,
                     icon: "error"
