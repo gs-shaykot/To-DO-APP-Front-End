@@ -39,7 +39,7 @@ const Login = () => {
     }
 
     return (
-        <div className={`${theme === 'light' ? 'bg-[#111827] text-white' : 'bg-base-100 text-black'} shadow-md fixed top-0 w-full`}>
+        <div className={`${theme === 'light' ? 'bg-[#111827] text-white' : 'bg-base-100 text-black'} shadow-md w-full`}>
             <div className="hero min-h-screen">
                 <div className="hero-content grid grid-cols-1 lg:grid-cols-2 gap-12 justify-items-end">
                     {/* Image Section */}
@@ -50,8 +50,8 @@ const Login = () => {
                     </div>
 
                     {/* Login Form */}
-                    <div className={`${theme === 'light' ? 'bg-[#1f2937] !text-white' : 'bg-base-100 text-black'} card bg-base-100 w-11/12 shadow-2xl mt-20 md:mt-0`}>
-                        <form className="card-body pb-0">
+                    <div className={`${theme === 'light' ? '!bg-[#1f2937] !text-white' : 'bg-base-100 text-black'} card bg-base-100 w-11/12 shadow-2xl mt-20 md:mt-0`}>
+                        <form className={`card-body pb-0 `}>
                             {/* Email */}
                             <div className="form-control">
                                 <label className="label">
@@ -62,7 +62,7 @@ const Login = () => {
                                     name="email"
                                     id="email"
                                     placeholder="Enter your email"
-                                    className="bg-transparent border-1 border-[#374151] focus:border-[#374151] input input-bordered"
+                                    className={`bg-transparent border-1 border-[#374151] focus:border-[#374151] input input-bordered ${theme === 'light' ? '!bg-[#374151]' : ''}`}
                                     required
                                 />
                             </div>
@@ -77,7 +77,7 @@ const Login = () => {
                                     name="password"
                                     id="password"
                                     placeholder="Enter your password"
-                                    className="bg-transparent border-1 border-[#374151] focus:border-[#374151] input input-bordered"
+                                    className={`bg-transparent border-1 border-[#374151] focus:border-[#374151] input input-bordered ${theme === 'light' ? '!bg-[#374151]' : ''}`}
                                     required
                                 />
                                 <label className="label flex justify-between">
@@ -89,13 +89,13 @@ const Login = () => {
 
                             {/* Login Button */}
                             <div className="form-control mt-6 pb-5">
-                                <button className="btn bg-white hover:bg-white text-black border-0">
+                                <button className="btn bg-white hover:bg-white text-black border border-blue-900">
                                     Login
                                 </button>
                             </div>
                         </form>
                         <div className="form-control p-8 pt-0">
-                            <button onClick={handleGoogleLogin} className="btn bg-white hover:bg-white text-black border-0">
+                            <button onClick={handleGoogleLogin} className="btn bg-primary text-white hover:bg-blue-900  border-0">
                                 LogIn with Google
                             </button>
                         </div>
